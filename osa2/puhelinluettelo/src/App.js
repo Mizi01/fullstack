@@ -45,7 +45,7 @@ const App = () => {
       if (window.confirm(`are you sure you want delete person ${props.click.name}`)) {
       console.log(`deleting ${props.click.name}`)
         axios
-        .delete(`http://localhost:3001/persons/${props.click.id}`)
+        .delete(`/api/persons/${props.click.id}`)
         setPersons(persons.filter(person => person !== props.click))
         setDeleteMessage(
           `'${props.click.name}' was deleted`
@@ -81,12 +81,7 @@ const App = () => {
       number: newNumber,
     }
 
-    setDeleteMessage(
-      `'${newName}' was added`
-    )
-    setTimeout(() => {
-      setDeleteMessage(null)
-    }, 2000)
+
 
     personService
     .create(nameObject)
@@ -94,7 +89,21 @@ const App = () => {
       setPersons(persons.concat(returnedPerson))
       setNewName('')
       setNewNumber('')
+
     })
+    .catch(error => {
+      setDeleteMessage(`${error.response.data.error}`)
+      setTimeout(() => {
+        setDeleteMessage(null)
+      }, 2000)
+      console.log(error.response.data)
+    })
+    setDeleteMessage(
+      `'${newName}' was added`
+    )
+    setTimeout(() => {
+      setDeleteMessage(null)
+    }, 2000)
   }
   }
 
