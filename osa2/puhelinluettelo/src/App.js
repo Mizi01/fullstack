@@ -20,12 +20,12 @@ const Notification = ({message}) => {
 }
 
 
-
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [deleteMessage, setDeleteMessage] = useState(null)
+  const [filter, setFilter] = useState('')
 
   useEffect(() => {
     console.log('effect')
@@ -68,6 +68,11 @@ const App = () => {
     )
   }
 
+
+    const handleFilter = (event) => {
+      setFilter(event.target.value)
+    }
+
   const addName = (event) => {
     event.preventDefault()
     console.log(persons)
@@ -80,8 +85,6 @@ const App = () => {
       name: newName,
       number: newNumber,
     }
-
-
 
     personService
     .create(nameObject)
@@ -122,6 +125,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>filter names <input value={filter} onChange={handleFilter} /></div>
       <Notification message={deleteMessage} />
       <form onSubmit={addName}>
           <div>
@@ -138,7 +142,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map(person =>
+      {persons.filter(person => person.name.toLowerCase().indexOf(filter.toLocaleLowerCase()) !== -1).map(person =>
         <Person key={person.id} person={person} />)}
     </div>
   )
