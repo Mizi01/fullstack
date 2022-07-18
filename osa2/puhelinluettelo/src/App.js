@@ -76,9 +76,24 @@ const App = () => {
   const addName = (event) => {
     event.preventDefault()
     console.log(persons)
-    var testi = persons.map(name=> name.name)
-    if (testi.includes(newName)) {
-      window.alert(newName + ' is already added to phonebook')
+    var testi = persons.find(name=> name.name === newName)
+    if (testi) {
+      if(window.confirm(newName + ' is already added to phonebook, replace the old number with new one?')){
+        const nameObject = {
+          name: newName,
+          number: newNumber
+        }
+        const oldPerson = persons.find(person => person.name === newName)
+        console.log(oldPerson)
+        personService
+        .update(oldPerson.id, nameObject)
+        .then(response => {
+          setPersons(persons.map(person => person.name !== newName ? person : response))
+          setNewName('')
+          setNewNumber('')
+        })
+      }
+
     }
     else {
        const nameObject = {
@@ -125,8 +140,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>filter names <input value={filter} onChange={handleFilter} /></div>
       <Notification message={deleteMessage} />
+      <div>filter names <input value={filter} onChange={handleFilter} /></div>
       <form onSubmit={addName}>
           <div>
           name: <input 
