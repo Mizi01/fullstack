@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import personService from './services/persons'
 import './index.css'
 
@@ -44,8 +43,8 @@ const App = () => {
       console.log(props)
       if (window.confirm(`are you sure you want delete person ${props.click.name}`)) {
       console.log(`deleting ${props.click.name}`)
-        axios
-        .delete(`/api/persons/${props.click.id}`)
+        personService
+        .remove(`${props.click.id}`)
         setPersons(persons.filter(person => person !== props.click))
         setDeleteMessage(
           `'${props.click.name}' was deleted`
@@ -92,6 +91,13 @@ const App = () => {
           setNewName('')
           setNewNumber('')
         })
+        .catch(error => {
+          setDeleteMessage(`Information of ${newName} has already been removed from server`)
+          setTimeout(() => {
+            setDeleteMessage(null)
+          }, 2000)
+          updatePage()
+        })
       }
 
     }
@@ -135,7 +141,13 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
-
+  const updatePage = () => {
+    personService
+    .getAll()
+    .then(initialPersons => {
+      setPersons(initialPersons)
+    })
+  }
 
   return (
     <div>

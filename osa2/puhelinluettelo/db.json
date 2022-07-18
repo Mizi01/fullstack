@@ -1,16 +1,6 @@
 {
   "persons": [
     {
-      "name": "Jaska",
-      "number": "15561165",
-      "id": 1
-    },
-    {
-      "name": "keijo",
-      "number": "045150865",
-      "id": 2
-    },
-    {
       "name": "Pera",
       "number": "4689165",
       "id": 3
@@ -21,8 +11,8 @@
       "id": 4
     },
     {
-      "name": "jouko",
-      "number": "015684531",
+      "name": "Pentti",
+      "number": "0145815258",
       "id": 5
     }
   ]
